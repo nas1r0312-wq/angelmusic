@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package com.anglemusic.app.listentogether.proto;
+package com.angelmusic.app.listentogether.proto;
 
-option java_package = "com.anglemusic.app.listentogether.proto";
+option java_package = "com.angelmusic.app.listentogether.proto";
 option java_multiple_files = false;
 option java_outer_classname = "Listentogether";
 

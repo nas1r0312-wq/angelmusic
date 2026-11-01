@@ -1,7 +1,7 @@
 /**
- * Wire protocol for AngleMusic Listen Together.
+ * Wire protocol for AngelMusic Listen Together.
  *
- * Mirrors app/src/main/kotlin/com/anglemusic/app/listentogether/Protocol.kt.
+ * Mirrors app/src/main/kotlin/com/angelmusic/app/listentogether/Protocol.kt.
  * Field names are snake_case because the Kotlin side declares @SerialName on
  * every multi-word field — changing a name here silently breaks decoding on
  * the client, which fails as a missing field rather than an error.

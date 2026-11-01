@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.anglemusic.artwork"
+    namespace = "com.angelmusic.artwork"
     compileSdk = 37
     defaultConfig { minSdk = 26 }
     compileOptions {

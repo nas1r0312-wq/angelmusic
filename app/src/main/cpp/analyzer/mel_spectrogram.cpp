@@ -3,7 +3,7 @@
  * front end this file is adapted from almost unchanged.
  *
  * Copyright (C) 2026 SFG545 (original Orchard implementation)
- * Copyright (C) 2026 AngleMusic contributors (adapted from an open-source base)
+ * Copyright (C) 2026 AngelMusic contributors (adapted from an open-source base)
  *
  * Orchard's original source is licensed under the GNU Affero General Public
  * License, version 3 or later. Per AGPLv3 section 13, this file is combined
@@ -27,7 +27,7 @@
 #include <complex>
 #include <vector>
 
-namespace anglemusic::smart {
+namespace angelmusic::smart {
 namespace {
 
 constexpr double kPi = 3.14159265358979323846;
@@ -216,4 +216,4 @@ BeatSpectrogram ComputeBeatSpectrogram(
   return result;
 }
 
-}  // namespace anglemusic::smart
+}  // namespace angelmusic::smart

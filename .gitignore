@@ -5,7 +5,7 @@
 *.aab
 
 # Standalone web portal repo
-anglemusic-web/
+angelmusic-web/
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -156,7 +156,7 @@ merge_strings.py
 # Local design reference/prototype, not app source
 stitch_lucid_glass_music/
 app/arm64Gms
-AngleMusic_GitHub_Analytics.xlsx
+AngelMusic_GitHub_Analytics.xlsx
 
 # Workspace-local native toolchains and Cargo outputs.
 .tools/
@@ -180,7 +180,7 @@ sh.exe.stackdump
 !.github/release-notes/*.md
 
 # Local data and tooling files
-/AngleMusic*.csv
-/AngleMusic*Analytics.xlsx
+/AngelMusic*.csv
+/AngelMusic*Analytics.xlsx
 skills-lock.json
 renovate.json

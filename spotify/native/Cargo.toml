@@ -1,11 +1,11 @@
 [package]
-name = "anglemusic_spotify"
+name = "angelmusic_spotify"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.81"
 
 [lib]
-name = "anglemusic_spotify"
+name = "angelmusic_spotify"
 crate-type = ["cdylib"]
 
 [dependencies]

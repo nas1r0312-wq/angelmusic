@@ -1,6 +1,6 @@
-# Contributing to AngleMusic
+# Contributing to AngelMusic
 
-Thanks for helping with AngleMusic. This guide describes how the project is laid out, how to build it, and how issues and pull requests are handled. If something here is out of date, please send a pull request that fixes it.
+Thanks for helping with AngelMusic. This guide describes how the project is laid out, how to build it, and how issues and pull requests are handled. If something here is out of date, please send a pull request that fixes it.
 
 By taking part you agree to follow the [Code of Conduct](../CODE_OF_CONDUCT.md).
 

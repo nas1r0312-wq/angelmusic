@@ -32,4 +32,4 @@ cleaner layout.
 ## Context
 
 Reference: `ui glicthes/Screenshot_20260831-124304.png`.
-`app/src/main/kotlin/com/anglemusic/app/anglemusic/AudioDeviceBottomSheet.kt`.
+`app/src/main/kotlin/com/angelmusic/app/angelmusic/AudioDeviceBottomSheet.kt`.

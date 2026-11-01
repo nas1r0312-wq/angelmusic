@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="assets/logo.png" width="220" alt="AngleMusic logo">
-  <h1>AngleMusic</h1>
+  <img src="assets/logo.png" width="220" alt="AngelMusic logo">
+  <h1>AngelMusic</h1>
   <p><strong>An open-source Android music player with a calm, glass-inspired interface.</strong></p>
   <p>
-    <a href="https://github.com/nas1r0312-wq/anglemusic/releases/latest/download/AngleMusic.apk">
-      <img src="https://img.shields.io/badge/Download-AngleMusic.apk-5268D8?style=for-the-badge&logo=android&logoColor=white" alt="Download the AngleMusic APK">
+    <a href="https://github.com/nas1r0312-wq/anglemusic/releases/latest/download/AngelMusic.apk">
+      <img src="https://img.shields.io/badge/Download-AngelMusic.apk-5268D8?style=for-the-badge&logo=android&logoColor=white" alt="Download the AngelMusic APK">
     </a>
   </p>
   <p>
@@ -13,11 +13,11 @@
   </p>
 </div>
 
-AngleMusic brings music discovery, playback, lyrics and your library together in one Android app. It is built with Kotlin, Jetpack Compose and Media3.
+AngelMusic brings music discovery, playback, lyrics and your library together in one Android app. It is built with Kotlin, Jetpack Compose and Media3.
 
 ## Download
 
-Get the latest APK from [Releases](https://github.com/nas1r0312-wq/anglemusic/releases/latest) or use the direct link: [AngleMusic.apk](https://github.com/nas1r0312-wq/anglemusic/releases/latest/download/AngleMusic.apk). It needs Android 8.0 or newer. Open the file on your phone and allow installing from your browser or file manager when Android asks.
+Get the latest APK from [Releases](https://github.com/nas1r0312-wq/anglemusic/releases/latest) or use the direct link: [AngelMusic.apk](https://github.com/nas1r0312-wq/anglemusic/releases/latest/download/AngelMusic.apk). It needs Android 8.0 or newer. Open the file on your phone and allow installing from your browser or file manager when Android asks.
 
 ## Features
 
@@ -65,6 +65,6 @@ See the [Contributing Guide](.github/CONTRIBUTING.md) and the [Code of Conduct](
 
 ## Legal
 
-AngleMusic is an independent project and is not affiliated with, endorsed by, or connected to YouTube, Google or their affiliates. Some features use unofficial third-party services, so use them at your own risk.
+AngelMusic is an independent project and is not affiliated with, endorsed by, or connected to YouTube, Google or their affiliates. Some features use unofficial third-party services, so use them at your own risk.
 
-AngleMusic is licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for the license and third-party attributions.
+AngelMusic is licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for the license and third-party attributions.

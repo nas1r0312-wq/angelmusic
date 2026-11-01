@@ -34,7 +34,7 @@ from that same mesh/hero color.
 
 ## Context
 
-Color derivation: `app/src/main/kotlin/com/anglemusic/app/ui/theme/colorengine/ColorEngineCore.kt`
-and the Swift reference under `app/src/main/kotlin/com/anglemusic/Color Engine/`.
+Color derivation: `app/src/main/kotlin/com/angelmusic/app/ui/theme/colorengine/ColorEngineCore.kt`
+and the Swift reference under `app/src/main/kotlin/com/angelmusic/Color Engine/`.
 Artist screen: `ui/screens/artist/ArtistScreen.kt`. the reference app reference for
 the mesh look: `the reference app/app/src/main/java/com/music/reference/ui/`.

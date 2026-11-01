@@ -25,7 +25,7 @@ import kotlinx.serialization.json.Json
 object SpotifyAuth {
     const val LOGIN_URL = "https://accounts.spotify.com/login?continue=https%3A%2F%2Fopen.spotify.com%2F"
     private const val ORIGIN = "https://open.spotify.com"
-    private const val BRIDGE = "AngleMusicSpotifyToken"
+    private const val BRIDGE = "AngelMusicSpotifyToken"
     private val mutex = Mutex()
     private val json = Json { ignoreUnknownKeys = true; isLenient = true }
     @Volatile private var appContext: Context? = null
@@ -119,8 +119,8 @@ object SpotifyAuth {
 
     private val tokenHook = """
         (function() {
-          if (location.origin !== '$ORIGIN' || window.__anglemusicSpotifyHook) return;
-          window.__anglemusicSpotifyHook = true;
+          if (location.origin !== '$ORIGIN' || window.__angelmusicSpotifyHook) return;
+          window.__angelmusicSpotifyHook = true;
           function report(body) { try { window.$BRIDGE.postMessage(body); } catch (_) {} }
           function isToken(url) { try { var u = new URL(String(url), location.href); return u.origin === '$ORIGIN' && u.pathname === '/api/token'; } catch (_) { return false; } }
           var fetchOriginal = window.fetch;
@@ -130,10 +130,10 @@ object SpotifyAuth {
             return response;
           };
           var open = XMLHttpRequest.prototype.open, send = XMLHttpRequest.prototype.send;
-          XMLHttpRequest.prototype.open = function(method, url) { this.__anglemusicTokenUrl = url; return open.apply(this, arguments); };
+          XMLHttpRequest.prototype.open = function(method, url) { this.__angelmusicTokenUrl = url; return open.apply(this, arguments); };
           XMLHttpRequest.prototype.send = function() {
             var xhr = this;
-            xhr.addEventListener('load', function() { if (isToken(xhr.__anglemusicTokenUrl)) { try { report(xhr.responseText); } catch (_) {} } });
+            xhr.addEventListener('load', function() { if (isToken(xhr.__angelmusicTokenUrl)) { try { report(xhr.responseText); } catch (_) {} } });
             return send.apply(this, arguments);
           };
           try { var session = document.getElementById('session'); if (session) report(session.textContent); } catch (_) {}

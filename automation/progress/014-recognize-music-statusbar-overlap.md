@@ -9,7 +9,7 @@ The app-wide pattern for TopAppBar inset handling uses the `appTopBarWindowInset
 ## Fix
 
 RecognitionScreen.kt:
-1. Added import: `com.anglemusic.app.ui.utils.appTopBarWindowInsets`
+1. Added import: `com.angelmusic.app.ui.utils.appTopBarWindowInsets`
 2. Modified TopAppBar call to pass `windowInsets = appTopBarWindowInsets()` as the first parameter after the lambda start
 
 This brings RecognitionScreen into alignment with RecognitionHistoryScreen (same file directory) and all other screens that correctly handle status bar insets.
@@ -22,6 +22,6 @@ Verify on-device: launch Recognize Music screen, confirm clock/battery status ba
 
 ## Files changed
 
-- `app/src/main/kotlin/com/anglemusic/app/ui/screens/recognition/RecognitionScreen.kt`
+- `app/src/main/kotlin/com/angelmusic/app/ui/screens/recognition/RecognitionScreen.kt`
   - Added import for `appTopBarWindowInsets`
   - Added `windowInsets = appTopBarWindowInsets()` parameter to TopAppBar

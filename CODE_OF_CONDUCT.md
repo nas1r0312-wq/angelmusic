@@ -2,7 +2,7 @@
 
 ## Our pledge
 
-We want AngleMusic to be a friendly, harassment-free project for everyone, whatever their age, background, identity, experience or ability. We pledge to act and interact in ways that keep the community open, welcoming and respectful.
+We want AngelMusic to be a friendly, harassment-free project for everyone, whatever their age, background, identity, experience or ability. We pledge to act and interact in ways that keep the community open, welcoming and respectful.
 
 ## What we expect
 

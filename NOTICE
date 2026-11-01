@@ -1,4 +1,4 @@
-AngleMusic bundles source vendored from third-party open-source projects.
+AngelMusic bundles source vendored from third-party open-source projects.
 
 ## Lyrics providers
 
@@ -33,11 +33,11 @@ Official music video matching is adapted from Square
 
 ## Base project
 
-AngleMusic is derived from an open-source Android music player by Aryan (CosmicTaser),
+AngelMusic is derived from an open-source Android music player by Aryan (CosmicTaser),
 which was itself forked from vivi-music by Vividh P Ashokan. Both are licensed under
 GPL-3.0 and their copyright notices are kept in the source files.
 
-AngleMusic changes the original: it is renamed, uses new launcher and in-app logos, uses
+AngelMusic changes the original: it is renamed, uses new launcher and in-app logos, uses
 its own application id and package name, and removes the original project's donation
 prompts and hosted-service defaults. It remains licensed under the GNU General Public
 License v3.0 (see LICENSE).

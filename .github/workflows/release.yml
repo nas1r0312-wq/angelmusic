@@ -64,11 +64,11 @@ jobs:
             echo "$KEYSTORE_BASE64" | base64 -d > app/keystore/release.keystore
             STORE_PW="$SECRET_STORE_PASSWORD"; ALIAS="$SECRET_KEY_ALIAS"; KEY_PW="$SECRET_KEY_PASSWORD"
           else
-            STORE_PW=$(openssl rand -hex 16); KEY_PW="$STORE_PW"; ALIAS=anglemusic
+            STORE_PW=$(openssl rand -hex 16); KEY_PW="$STORE_PW"; ALIAS=angelmusic
             keytool -genkeypair -keystore app/keystore/release.keystore \
               -storepass "$STORE_PW" -keypass "$KEY_PW" -alias "$ALIAS" \
               -keyalg RSA -keysize 2048 -validity 10000 \
-              -dname "CN=AngleMusic,O=AngleMusic,C=US"
+              -dname "CN=AngelMusic,O=AngelMusic,C=US"
           fi
           echo "::add-mask::$STORE_PW"; echo "::add-mask::$KEY_PW"
           echo "STORE_PASSWORD=$STORE_PW" >> "$GITHUB_ENV"
@@ -89,10 +89,10 @@ jobs:
           TAG="${{ github.event.inputs.tag || github.ref_name }}"
           APK=$(find app/build/outputs/apk -name '*.apk' | head -n 1)
           test -n "$APK"
-          cp "$APK" AngleMusic.apk
+          cp "$APK" AngelMusic.apk
           if ! gh release view "$TAG" >/dev/null 2>&1; then
             gh release create "$TAG" --target "${{ github.sha }}" --latest \
-              --title "AngleMusic $TAG" \
-              --notes "Download **AngleMusic.apk** below and open it on your Android phone (Android 8.0 or newer). Android may ask you to allow installing from your browser or file manager."
+              --title "AngelMusic $TAG" \
+              --notes "Download **AngelMusic.apk** below and open it on your Android phone (Android 8.0 or newer). Android may ask you to allow installing from your browser or file manager."
           fi
-          gh release upload "$TAG" AngleMusic.apk --clobber
+          gh release upload "$TAG" AngelMusic.apk --clobber

@@ -1,5 +1,5 @@
 name: Bug report
-description: Something in AngleMusic is broken
+description: Something in AngelMusic is broken
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -74,7 +74,7 @@ body:
   - type: input
     id: app-version
     attributes:
-      label: AngleMusic version
+      label: AngelMusic version
       description: Settings → Help & About → About. For a nightly, give the date you installed it.
       placeholder: "2.0.0 nightly"
     validations:

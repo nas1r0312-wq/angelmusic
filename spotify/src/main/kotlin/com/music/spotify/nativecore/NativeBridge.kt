@@ -29,7 +29,7 @@ interface NativeEvents {
 object NativeBridge {
 
     init {
-        System.loadLibrary("anglemusic_spotify")
+        System.loadLibrary("angelmusic_spotify")
     }
 
     /**

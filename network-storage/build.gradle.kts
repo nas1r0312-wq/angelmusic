@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.anglemusic.storage"
+    namespace = "com.angelmusic.storage"
     compileSdk = 37
     defaultConfig { minSdk = 26 }
     compileOptions {

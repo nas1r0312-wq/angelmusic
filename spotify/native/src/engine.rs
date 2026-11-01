@@ -371,7 +371,7 @@ pub fn start(
     let rt = tokio::runtime::Builder::new_multi_thread()
         .worker_threads(2)
         .enable_all()
-        .thread_name("AngleMusicSpotify")
+        .thread_name("AngelMusicSpotify")
         .build()
         .map_err(|e| format!("failed to build runtime: {e}"))?;
 

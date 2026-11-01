@@ -6,7 +6,7 @@ plugins {
 val nativeJniOut = layout.buildDirectory.dir("generated/jniLibs")
 
 android {
-    namespace = "com.anglemusic.spotify"
+    namespace = "com.angelmusic.spotify"
     sourceSets { getByName("main") { jniLibs.srcDir(file("build/generated/jniLibs")) } }
     compileSdk = 37
     defaultConfig {

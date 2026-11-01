@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.AngleMusic" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.AngelMusic" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowMinWidthMinor">100%</item>
@@ -12,15 +12,15 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
-    <!-- Launch theme: a plain black system splash that AngleMusicIntro picks up from seamlessly. -->
-    <style name="Theme.AngleMusic.Starting" parent="Theme.SplashScreen">
+    <!-- Launch theme: a plain black system splash that AngelMusicIntro picks up from seamlessly. -->
+    <style name="Theme.AngelMusic.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#000000</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_blank</item>
-        <item name="postSplashScreenTheme">@style/Theme.AngleMusic</item>
+        <item name="postSplashScreenTheme">@style/Theme.AngelMusic</item>
     </style>
 
     <!-- Widget Theme with Material 3 colors fallback for API < 31 -->
-    <style name="Theme.Widget.AngleMusic" parent="@android:style/Theme.DeviceDefault.DayNight">
+    <style name="Theme.Widget.AngelMusic" parent="@android:style/Theme.DeviceDefault.DayNight">
         <item name="android:colorBackground">#E6E1E5</item>
     </style>
 </resources>

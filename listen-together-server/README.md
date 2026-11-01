@@ -1,4 +1,4 @@
-# AngleMusic Sync — Listen Together server
+# AngelMusic Sync — Listen Together server
 
 Cloudflare Worker + Durable Objects. One Durable Object per room code; that
 object owns membership, host, playback position and the queue, so there is
@@ -12,14 +12,14 @@ npx wrangler login      # browser auth, no card asked
 npx wrangler deploy
 ```
 
-You get `https://anglemusic-sync.<subdomain>.workers.dev`. Put
-`wss://anglemusic-sync.<subdomain>.workers.dev` into the app under
+You get `https://angelmusic-sync.<subdomain>.workers.dev`. Put
+`wss://angelmusic-sync.<subdomain>.workers.dev` into the app under
 **Settings → Integrations → Listen Together → custom server URL**.
 
 Check it is alive:
 
 ```bash
-curl https://anglemusic-sync.<subdomain>.workers.dev/health   # {"ok":true}
+curl https://angelmusic-sync.<subdomain>.workers.dev/health   # {"ok":true}
 ```
 
 Watch live logs while testing:

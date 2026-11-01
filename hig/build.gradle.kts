@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.anglemusic.app.hig"
+    namespace = "com.angelmusic.app.hig"
     compileSdk = 37
 
     defaultConfig {

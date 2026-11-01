@@ -28,18 +28,18 @@ plugins {
 }
 
 android {
-    namespace = "com.anglemusic.app"
+    namespace = "com.angelmusic.app"
     compileSdk = 37
     ndkVersion = "27.0.12077973"
 
     defaultConfig {
-        applicationId = "com.anglemusic.app"
+        applicationId = "com.angelmusic.app"
         minSdk = 26
         targetSdk = 36
         versionCode = appVersionCode
         versionName = appVersionName
 
-        testInstrumentationRunner = providers.gradleProperty("anglemusicTestRunner")
+        testInstrumentationRunner = providers.gradleProperty("angelmusicTestRunner")
             .orElse("androidx.test.runner.AndroidJUnitRunner").get()
         vectorDrawables.useSupportLibrary = true
 
