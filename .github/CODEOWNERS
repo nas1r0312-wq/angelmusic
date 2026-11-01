@@ -1,0 +1,6 @@
+# Every change is reviewed by the maintainer. Add owners per area as the team grows.
+*                         @nas1r0312-wq
+
+# Release and CI changes
+/.github/                 @nas1r0312-wq
+/version.properties       @nas1r0312-wq
