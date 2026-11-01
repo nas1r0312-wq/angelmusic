@@ -1,4 +1,4 @@
-name: Stable Release Build
+name: Release APK
 
 on:
   push:
@@ -15,14 +15,11 @@ permissions:
   contents: write
 
 jobs:
-  build_stable:
-    name: Build Universal GMS Stable Release
+  release:
+    name: Build and publish the public APK
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Set up JDK 21
         uses: actions/setup-java@v5
@@ -34,9 +31,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           cache-disabled: true
-
-      - name: Setup FFTW for Android
-        uses: ./.github/actions/setup-fftw
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -54,28 +48,51 @@ jobs:
             -validity 10000 \
             -dname "CN=Android Debug,O=Android,C=US"
 
-      - name: Decode release keystore
+      # A permanent signing key can be added later as the repository secrets
+      # KEYSTORE (base64), KEYSTORE_PASSWORD, KEY_ALIAS and KEY_PASSWORD. Until
+      # then every release is signed with a fresh key, so updating from an older
+      # release requires uninstalling it first.
+      - name: Prepare signing key
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE }}
+          SECRET_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          SECRET_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          SECRET_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           mkdir -p app/keystore
-          echo "$KEYSTORE_BASE64" | base64 -d > app/keystore/release.keystore
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > app/keystore/release.keystore
+            STORE_PW="$SECRET_STORE_PASSWORD"; ALIAS="$SECRET_KEY_ALIAS"; KEY_PW="$SECRET_KEY_PASSWORD"
+          else
+            STORE_PW=$(openssl rand -hex 16); KEY_PW="$STORE_PW"; ALIAS=anglemusic
+            keytool -genkeypair -keystore app/keystore/release.keystore \
+              -storepass "$STORE_PW" -keypass "$KEY_PW" -alias "$ALIAS" \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=AngleMusic,O=AngleMusic,C=US"
+          fi
+          echo "::add-mask::$STORE_PW"; echo "::add-mask::$KEY_PW"
+          echo "STORE_PASSWORD=$STORE_PW" >> "$GITHUB_ENV"
+          echo "KEY_ALIAS=$ALIAS" >> "$GITHUB_ENV"
+          echo "KEY_PASSWORD=$KEY_PW" >> "$GITHUB_ENV"
 
-      - name: Build Universal GMS Release APK
+      - name: Build release APK
         env:
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
           LASTFM_SECRET: ${{ secrets.LASTFM_SECRET }}
-          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          ./gradlew assembleUniversalGmsRelease --no-configuration-cache --console=plain --warning-mode summary -x lint
+          ./gradlew assembleUniversalGmsRelease --no-configuration-cache --console=plain --warning-mode summary
 
-      - name: Upload APK to Release
+      - name: Publish to GitHub Releases
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="${{ github.event.inputs.tag || github.ref_name }}"
-          APK_PATH=$(find app/build/outputs/apk -name '*.apk' | head -n 1)
-          mv "$APK_PATH" "anglemusic-${TAG}.apk"
-          gh release upload "$TAG" "anglemusic-${TAG}.apk" --repo "${{ github.repository }}" --clobber
+          APK=$(find app/build/outputs/apk -name '*.apk' | head -n 1)
+          test -n "$APK"
+          cp "$APK" AngleMusic.apk
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "${{ github.sha }}" --latest \
+              --title "AngleMusic $TAG" \
+              --notes "Download **AngleMusic.apk** below and open it on your Android phone (Android 8.0 or newer). Android may ask you to allow installing from your browser or file manager."
+          fi
+          gh release upload "$TAG" AngleMusic.apk --clobber

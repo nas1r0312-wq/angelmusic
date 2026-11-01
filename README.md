@@ -1,7 +1,12 @@
 <div align="center">
-  <img src="assets/logo.jpg" width="160" alt="AngleMusic logo">
+  <img src="assets/logo.png" width="220" alt="AngleMusic logo">
   <h1>AngleMusic</h1>
   <p><strong>An open-source Android music player with a calm, glass-inspired interface.</strong></p>
+  <p>
+    <a href="https://github.com/nas1r0312-wq/anglemusic/releases/latest/download/AngleMusic.apk">
+      <img src="https://img.shields.io/badge/Download-AngleMusic.apk-5268D8?style=for-the-badge&logo=android&logoColor=white" alt="Download the AngleMusic APK">
+    </a>
+  </p>
   <p>
     <img src="https://img.shields.io/github/license/nas1r0312-wq/anglemusic?style=flat" alt="GPL-3.0 license">
     <img src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?style=flat&logo=android&logoColor=white" alt="Android 8.0 and later">
@@ -9,6 +14,10 @@
 </div>
 
 AngleMusic brings music discovery, playback, lyrics and your library together in one Android app. It is built with Kotlin, Jetpack Compose and Media3.
+
+## Download
+
+Get the latest APK from [Releases](https://github.com/nas1r0312-wq/anglemusic/releases/latest) or use the direct link: [AngleMusic.apk](https://github.com/nas1r0312-wq/anglemusic/releases/latest/download/AngleMusic.apk). It needs Android 8.0 or newer. Open the file on your phone and allow installing from your browser or file manager when Android asks.
 
 ## Features
 
