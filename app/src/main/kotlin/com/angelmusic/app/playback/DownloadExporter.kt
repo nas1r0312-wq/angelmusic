@@ -39,7 +39,15 @@ object DownloadExporter {
         val video: YTPlayerUtils.VideoStream?,
     )
 
-    fun export(context: Context, cache: Cache, pkg: Package): Uri? {
+    fun export(context: Context, cache: Cache, pkg: Package): Uri? =
+        try {
+            exportUnchecked(context, cache, pkg)
+        } catch (e: Exception) {
+            Timber.e(e, "Export of %s failed", pkg.title)
+            null
+        }
+
+    private fun exportUnchecked(context: Context, cache: Cache, pkg: Package): Uri? {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return null
         val mime = pkg.audioMimeType?.substringBefore(';')?.trim().takeUnless { it.isNullOrEmpty() } ?: "audio/mp4"
         val base = exportBaseName(pkg.artist, pkg.title)

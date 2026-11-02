@@ -99,7 +99,11 @@ constructor(
     private val appContext: Context = context
     private val pendingUpgrades = java.util.concurrent.ConcurrentHashMap<String, FormatEntity>()
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    // Uncaught errors in background download work are logged here instead of crashing the app.
+    private val scope = CoroutineScope(
+        SupervisorJob() + Dispatchers.IO +
+            kotlinx.coroutines.CoroutineExceptionHandler { _, error -> Timber.e(error, "Background download task failed") },
+    )
 
     private val _downloads = MutableStateFlow<Map<String, Download>>(emptyMap())
     val downloads: kotlinx.coroutines.flow.StateFlow<Map<String, Download>> = _downloads
@@ -292,7 +296,7 @@ constructor(
             val title = normalizeCanvasSongTitle(requestedTitle)
             val artist = normalizeCanvasArtistName(requestedArtist)
 
-            val canvasUrl = when (canvasSource) {
+            val canvasUrl = try { when (canvasSource) {
                 CanvasSource.AUTO ->
                     SpotifyCanvasLookup.getBySongArtist(appContext, requestedTitle, requestedArtist)?.preferredAnimationUrl
                         ?: AppleMusicCanvasProvider.getBySongArtist(title, artist, "", storefront)?.preferredAnimationUrl
@@ -304,6 +308,11 @@ constructor(
                 CanvasSource.TIDAL -> TidalCanvasProvider.getBySongArtist(title, artist, "")?.preferredAnimationUrl
                 CanvasSource.SPOTIFY ->
                     SpotifyCanvasLookup.getBySongArtist(appContext, requestedTitle, requestedArtist)?.preferredAnimationUrl
+            } } catch (error: CancellationException) {
+                throw error
+            } catch (error: Exception) {
+                Timber.tag("CanvasDownload").w(error, "Canvas lookup failed for %s", mediaId)
+                null
             } ?: return@launch
 
             val dataSpec = DataSpec.Builder()
@@ -494,7 +503,18 @@ constructor(
         if (appContext.dataStore.get(SaveDownloadsToMusicFolderKey, true)) exportToMusicFolder(songId, key)
     }
 
+    /** A failed copy into shared storage must never take the app down; the download itself is already complete. */
     private suspend fun exportToMusicFolder(songId: String, cacheKey: String = songId) {
+        try {
+            exportToMusicFolderUnchecked(songId, cacheKey)
+        } catch (error: CancellationException) {
+            throw error
+        } catch (error: Exception) {
+            Timber.e(error, "Export to the music folder failed for %s", songId)
+        }
+    }
+
+    private suspend fun exportToMusicFolderUnchecked(songId: String, cacheKey: String) {
         val song = database.song(songId).first() ?: return
         val format = database.format(songId).first()
         val lyrics = database.lyrics(songId).first()?.lyrics
