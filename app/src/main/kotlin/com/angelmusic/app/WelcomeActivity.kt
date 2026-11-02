@@ -532,7 +532,7 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                                 SymbolIcon(symbol = sf("chevron.right"), contentDescription = null, tint = AppTheme.colorScheme.onSurfaceVariant)
                             },
                             onClick = {
-                                uriHandler.safeOpenUri(context, "https://github.com/nas1r0312-wq/anglemusic")
+                                uriHandler.safeOpenUri(context, "https://github.com/nas1r0312-wq/angelmusic")
                             }
                         )
 
@@ -549,7 +549,7 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                                 SymbolIcon(symbol = sf("chevron.right"), contentDescription = null, tint = AppTheme.colorScheme.onSurfaceVariant)
                             },
                             onClick = {
-                                uriHandler.safeOpenUri(context, "https://github.com/nas1r0312-wq/anglemusic/discussions")
+                                uriHandler.safeOpenUri(context, "https://github.com/nas1r0312-wq/angelmusic/discussions")
                             }
                         )
 

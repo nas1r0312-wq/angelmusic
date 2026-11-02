@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the idea. For open-ended questions, use [Discussions](https://github.com/nas1r0312-wq/anglemusic/discussions) instead.
+        Thanks for the idea. For open-ended questions, use [Discussions](https://github.com/nas1r0312-wq/angelmusic/discussions) instead.
 
   - type: checkboxes
     id: checklist

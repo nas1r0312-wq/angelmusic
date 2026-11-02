@@ -143,7 +143,7 @@ fun ChangelogScreen(
                         showingCached = true
                     }
                 } else {
-                    val changelogUrl = URL("https://github.com/nas1r0312-wq/anglemusic/releases/download/$tag/changelog.json")
+                    val changelogUrl = URL("https://github.com/nas1r0312-wq/angelmusic/releases/download/$tag/changelog.json")
                     val connection = changelogUrl.openConnection() as HttpURLConnection
                     connection.setRequestProperty("User-Agent", "AngelMusic-Changelog-App")
                     connection.setRequestProperty("Accept", "application/json")
@@ -216,7 +216,7 @@ fun ChangelogScreen(
         isFetchingOldReleases = true
         coroutineScope.launch(Dispatchers.IO) {
             try {
-                val releasesUrl = URL("https://api.github.com/repos/nas1r0312-wq/anglemusic/releases")
+                val releasesUrl = URL("https://api.github.com/repos/nas1r0312-wq/angelmusic/releases")
                 val connection = releasesUrl.openConnection() as HttpURLConnection
                 connection.setRequestProperty("User-Agent", "AngelMusic-Changelog-App")
                 connection.setRequestProperty("Accept", "application/vnd.github+json")

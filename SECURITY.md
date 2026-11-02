@@ -8,7 +8,7 @@ Only the latest release (and the current nightly/beta build) are supported with 
 
 Please **do not** open a public GitHub issue for security vulnerabilities.
 
-Instead, report it privately via [GitHub Security Advisories](https://github.com/nas1r0312-wq/anglemusic/security/advisories/new) for this repo, or reach out on [GitHub Discussions](https://github.com/nas1r0312-wq/anglemusic/discussions) to arrange a private disclosure.
+Instead, report it privately via [GitHub Security Advisories](https://github.com/nas1r0312-wq/angelmusic/security/advisories/new) for this repo, or reach out on [GitHub Discussions](https://github.com/nas1r0312-wq/angelmusic/discussions) to arrange a private disclosure.
 
 Include:
 - A description of the vulnerability and its impact.

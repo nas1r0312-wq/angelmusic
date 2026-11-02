@@ -13,7 +13,7 @@ body:
     attributes:
       label: Before you submit
       options:
-        - label: I'm using the [latest nightly build](https://github.com/nas1r0312-wq/anglemusic/releases/tag/2.0.0-nightly) (or the problem also happens on stable).
+        - label: I'm using the [latest nightly build](https://github.com/nas1r0312-wq/angelmusic/releases/tag/2.0.0-nightly) (or the problem also happens on stable).
           required: true
         - label: I searched the existing issues and this isn't a duplicate.
           required: true

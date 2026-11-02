@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
  */
 private const val LYRICS_TIMEOUT_SECONDS = 6L
 
-internal const val LYRICS_AGENT = "AngelMusic (https://github.com/nas1r0312-wq/anglemusic)"
+internal const val LYRICS_AGENT = "AngelMusic (https://github.com/nas1r0312-wq/angelmusic)"
 
 val lyricsJson = Json { ignoreUnknownKeys = true; isLenient = true }
 

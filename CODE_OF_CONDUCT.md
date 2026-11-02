@@ -25,7 +25,7 @@ The maintainer is responsible for clarifying and enforcing these standards and m
 
 ## Reporting
 
-To report a problem, message the maintainer privately on the project [GitHub Discussions](https://github.com/nas1r0312-wq/anglemusic/discussions), or open a private [security advisory](https://github.com/nas1r0312-wq/anglemusic/security/advisories/new) if it involves safety. Reports are kept private, and we will look into each one and respond.
+To report a problem, message the maintainer privately on the project [GitHub Discussions](https://github.com/nas1r0312-wq/angelmusic/discussions), or open a private [security advisory](https://github.com/nas1r0312-wq/angelmusic/security/advisories/new) if it involves safety. Reports are kept private, and we will look into each one and respond.
 
 ## Attribution
 

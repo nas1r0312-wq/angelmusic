@@ -25,7 +25,7 @@ import kotlin.math.abs
 object LrcLib {
 
     private const val BASE = "https://lrclib.net/api"
-    private const val AGENT = "AngelMusic (https://github.com/nas1r0312-wq/anglemusic)"
+    private const val AGENT = "AngelMusic (https://github.com/nas1r0312-wq/angelmusic)"
 
     private val json = Json { ignoreUnknownKeys = true }
 

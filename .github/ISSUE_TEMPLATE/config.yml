@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Ask a question or share an idea
-    url: https://github.com/nas1r0312-wq/anglemusic/discussions
+    url: https://github.com/nas1r0312-wq/angelmusic/discussions
     about: For questions and open-ended ideas that aren't a bug or a specific feature request.
   - name: Report a security problem
-    url: https://github.com/nas1r0312-wq/anglemusic/security/policy
+    url: https://github.com/nas1r0312-wq/angelmusic/security/policy
     about: Please report security problems privately, not as a public issue.

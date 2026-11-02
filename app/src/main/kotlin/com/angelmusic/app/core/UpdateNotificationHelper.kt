@@ -40,9 +40,9 @@ object UpdateNotificationHelper {
 
         // Direct download URL format from angelmusicupdater - use the full tag (vX.X.X or bX.X.X) or nightly link
         val apkUrl = if (versionName.contains("nightly", ignoreCase = true)) {
-            "https://nightly.link/nas1r0312-wq/anglemusic/workflows/nightly.yml/main/angelmusic-gms-nightly.zip"
+            "https://nightly.link/nas1r0312-wq/angelmusic/workflows/nightly.yml/main/angelmusic-gms-nightly.zip"
         } else {
-            "https://github.com/nas1r0312-wq/anglemusic/releases/download/$versionName/angelmusic-$versionName.apk"
+            "https://github.com/nas1r0312-wq/angelmusic/releases/download/$versionName/angelmusic-$versionName.apk"
         }
         val intent = Intent(Intent.ACTION_VIEW, apkUrl.toUri())
 

@@ -325,7 +325,7 @@ fun SettingDialoge(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally)
                 ) {
-                    TextButton(onClick = { uriHandler.openUri("https://github.com/nas1r0312-wq/anglemusic#readme") }) {
+                    TextButton(onClick = { uriHandler.openUri("https://github.com/nas1r0312-wq/angelmusic#readme") }) {
                         Text(
                             text = "Privacy Policy",
                             fontWeight = FontWeight.Light,
@@ -337,7 +337,7 @@ fun SettingDialoge(
                     }
                 
                     Text(text = "•", color = onPrimaryColor)
-                    TextButton(onClick = { uriHandler.openUri("https://github.com/nas1r0312-wq/anglemusic#readme") }) {
+                    TextButton(onClick = { uriHandler.openUri("https://github.com/nas1r0312-wq/angelmusic#readme") }) {
                         Text(
                             text = "Terms of Service",
                             fontWeight = FontWeight.Light,

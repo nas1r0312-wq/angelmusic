@@ -143,7 +143,7 @@ Output MUST be a JSON array with EXACTLY $lineCount strings."""
                 if (apiKey.isNotBlank()) addHeader("Authorization", "Bearer ${apiKey.trim()}")
             }
             .addHeader("Content-Type", "application/json")
-            .addHeader("HTTP-Referer", "https://github.com/nas1r0312-wq/anglemusic")
+            .addHeader("HTTP-Referer", "https://github.com/nas1r0312-wq/angelmusic")
             .addHeader("X-Title", "angelmusic")
             .post(jsonBody.toString().toRequestBody(JSON))
             .build()

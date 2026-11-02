@@ -3,12 +3,12 @@
   <h1>AngelMusic</h1>
   <p><strong>An open-source Android music player with a calm, glass-inspired interface.</strong></p>
   <p>
-    <a href="https://github.com/nas1r0312-wq/anglemusic/releases/latest/download/AngelMusic.apk">
+    <a href="https://github.com/nas1r0312-wq/angelmusic/releases/latest/download/AngelMusic.apk">
       <img src="https://img.shields.io/badge/Download-AngelMusic.apk-5268D8?style=for-the-badge&logo=android&logoColor=white" alt="Download the AngelMusic APK">
     </a>
   </p>
   <p>
-    <img src="https://img.shields.io/github/license/nas1r0312-wq/anglemusic?style=flat" alt="GPL-3.0 license">
+    <img src="https://img.shields.io/github/license/nas1r0312-wq/angelmusic?style=flat" alt="GPL-3.0 license">
     <img src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?style=flat&logo=android&logoColor=white" alt="Android 8.0 and later">
   </p>
 </div>
@@ -17,7 +17,7 @@ AngelMusic brings music discovery, playback, lyrics and your library together in
 
 ## Download
 
-Get the latest APK from [Releases](https://github.com/nas1r0312-wq/anglemusic/releases/latest) or use the direct link: [AngelMusic.apk](https://github.com/nas1r0312-wq/anglemusic/releases/latest/download/AngelMusic.apk). It needs Android 8.0 or newer. Open the file on your phone and allow installing from your browser or file manager when Android asks.
+Get the latest APK from [Releases](https://github.com/nas1r0312-wq/angelmusic/releases/latest) or use the direct link: [AngelMusic.apk](https://github.com/nas1r0312-wq/angelmusic/releases/latest/download/AngelMusic.apk). It needs Android 8.0 or newer. Open the file on your phone and allow installing from your browser or file manager when Android asks.
 
 ## Features
 
@@ -61,7 +61,7 @@ The `Foss` build omits Google Play services; the `Gms` build includes Google Cas
 
 ## Contributing
 
-See the [Contributing Guide](.github/CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). Questions and ideas go to [GitHub Discussions](https://github.com/nas1r0312-wq/anglemusic/discussions).
+See the [Contributing Guide](.github/CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). Questions and ideas go to [GitHub Discussions](https://github.com/nas1r0312-wq/angelmusic/discussions).
 
 ## Legal
 

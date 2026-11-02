@@ -56,8 +56,8 @@ Keep a change inside one module when you can. Features should talk to each other
 
 ## Finding something to work on
 
-- Issues labelled [`good first issue`](https://github.com/nas1r0312-wq/anglemusic/labels/good%20first%20issue) or [`help wanted`](https://github.com/nas1r0312-wq/anglemusic/labels/help%20wanted) are a good place to start.
-- For anything large, open an issue or ask in the [GitHub Discussions](https://github.com/nas1r0312-wq/anglemusic/discussions) first, so we agree on the approach before you spend time on it.
+- Issues labelled [`good first issue`](https://github.com/nas1r0312-wq/angelmusic/labels/good%20first%20issue) or [`help wanted`](https://github.com/nas1r0312-wq/angelmusic/labels/help%20wanted) are a good place to start.
+- For anything large, open an issue or ask in the [GitHub Discussions](https://github.com/nas1r0312-wq/angelmusic/discussions) first, so we agree on the approach before you spend time on it.
 
 ## Issues and labels
 
@@ -79,7 +79,7 @@ The maintainer triages every issue with labels:
 | `status: in progress` | Someone is working on it. |
 | `status: fixed in nightly` | Fixed in the latest nightly, not yet in stable. |
 
-Please test against the latest [nightly build](https://github.com/nas1r0312-wq/anglemusic/releases/tag/2.0.0-nightly) before reporting. Issues with no activity for 60 days are marked stale and closed a week later.
+Please test against the latest [nightly build](https://github.com/nas1r0312-wq/angelmusic/releases/tag/2.0.0-nightly) before reporting. Issues with no activity for 60 days are marked stale and closed a week later.
 
 ## Branches and commits
 
@@ -118,4 +118,4 @@ Please do not open a public issue for a vulnerability. Follow [SECURITY.md](../S
 
 ## Questions
 
-Ask in the [GitHub Discussions](https://github.com/nas1r0312-wq/anglemusic/discussions) or in [Discussions](https://github.com/nas1r0312-wq/anglemusic/discussions).
+Ask in the [GitHub Discussions](https://github.com/nas1r0312-wq/angelmusic/discussions) or in [Discussions](https://github.com/nas1r0312-wq/angelmusic/discussions).
