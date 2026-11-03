@@ -21,16 +21,15 @@ package() {
   cp -a squashfs-root/. "$pkgdir/opt/$pkgname/"
   rm -f "$pkgdir/opt/$pkgname/AppRun"
 
-  local exe
-  exe=$(find squashfs-root -maxdepth 1 -type f -iname 'angelmusic' | head -n1)
-  [ -n "$exe" ] || { echo "AngelMusic executable not found in AppImage" >&2; return 1; }
+  # The main binary is the large executable at the top level (electron-builder names it after the package).
   local exe_name
-  exe_name=$(basename "$exe")
+  exe_name=$(find squashfs-root -maxdepth 1 -type f -perm -u+x -size +10M -printf '%f\n' | head -n1)
+  [ -n "$exe_name" ] || { echo "AngelMusic executable not found in AppImage" >&2; return 1; }
 
   install -dm755 "$pkgdir/usr/bin"
   cat > "$pkgdir/usr/bin/$pkgname" <<WRAP
 #!/bin/sh
-exec /opt/$pkgname/$exe_name "\$@"
+exec /opt/$pkgname/$exe_name --no-sandbox "\$@"
 WRAP
   chmod 755 "$pkgdir/usr/bin/$pkgname"
 
