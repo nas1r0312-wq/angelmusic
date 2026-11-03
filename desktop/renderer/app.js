@@ -218,7 +218,7 @@ function songRow(song, onPlay, extra = []) {
       onkeydown: (e) => { if (e.key === "Enter") onPlay(); },
     },
     h("div", { class: "thumb" },
-      h("img", { src: song.thumb || "", alt: "", loading: "lazy" }),
+      h("img", { src: song.thumb || null, alt: "", loading: "lazy" }),
       playing ? h("span", { class: "eq" }, h("i"), h("i"), h("i")) : null),
     h("div", { class: "info" },
       h("div", { class: "t", text: song.title }),
@@ -404,13 +404,18 @@ function prevIndex() {
   return state.repeat === "all" ? n - 1 : 0;
 }
 
+function setArt(img, url) {
+  if (url) img.src = url;
+  else img.removeAttribute("src");
+}
+
 function paintSong(song) {
   $("m-title").textContent = song.title;
   $("m-artist").textContent = song.artist;
   $("f-title").textContent = song.title;
   $("f-artist").textContent = song.artist;
-  $("m-thumb").src = song.thumb;
-  $("f-art").src = song.thumb;
+  setArt($("m-thumb"), song.thumb);
+  setArt($("f-art"), song.thumb);
   $("bg").style.backgroundImage = song.thumb ? `url(${JSON.stringify(song.thumb)})` : "";
   $("dur").textContent = song.duration ? fmt(song.duration) : "0:00";
   $("cur").textContent = "0:00";
