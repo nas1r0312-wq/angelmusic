@@ -61,7 +61,10 @@
       "artifactName": "AngelMusic-${version}.${ext}"
     }
   },
-  "author": "AngelMusic",
+  "author": {
+    "name": "AngelMusic",
+    "email": "angelmusic@users.noreply.github.com"
+  },
   "homepage": "https://github.com/nas1r0312-wq/angelmusic",
   "repository": {
     "type": "git",
