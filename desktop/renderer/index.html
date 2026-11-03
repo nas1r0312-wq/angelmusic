@@ -8,40 +8,73 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <aside>
-    <div class="brand"><img src="logo.png" alt=""><span>AngelMusic</span></div>
-    <nav>
-      <button data-tab="search" class="active">Arama</button>
-      <button data-tab="queue">Sıra</button>
-      <button data-tab="liked">Beğendiklerim</button>
-      <button data-tab="playlists">Listeler</button>
-    </nav>
-  </aside>
+  <div id="bg" class="bg"></div>
+
+  <nav class="rail glass">
+    <img class="logo" src="logo.png" alt="AngelMusic">
+    <button data-tab="search" class="on" title="Ara">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><span>Ara</span>
+    </button>
+    <button data-tab="queue" title="Sıra">
+      <svg viewBox="0 0 24 24"><path d="M4 6h12M4 12h12M4 18h8M18 15v6"/></svg><span>Sıra</span>
+    </button>
+    <button data-tab="liked" title="Beğendiklerim">
+      <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Beğeni</span>
+    </button>
+    <button data-tab="playlists" title="Listeler">
+      <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Listeler</span>
+    </button>
+  </nav>
+
   <main>
-    <form id="searchForm"><input id="q" placeholder="Şarkı veya sanatçı ara" autocomplete="off"><button>Ara</button></form>
-    <section id="view"></section>
+    <header>
+      <form id="searchForm" class="search glass">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+        <input id="q" placeholder="Şarkı, sanatçı veya albüm ara" autocomplete="off">
+      </form>
+    </header>
+    <section id="view" class="view"></section>
   </main>
-  <aside class="lyrics">
-    <h3>Şarkı sözleri</h3>
-    <div id="lyricsBody">Bir şarkı çalın</div>
-  </aside>
-  <footer class="player">
-    <img id="np-thumb" alt="">
-    <div class="meta"><div id="np-title">Çalan yok</div><div id="np-artist"></div></div>
-    <div class="controls">
-      <button id="prev" title="Önceki">⏮</button>
-      <button id="toggle" class="primary" title="Oynat / duraklat">▶</button>
-      <button id="next" title="Sonraki">⏭</button>
+
+  <div id="mini" class="mini-player glass" role="button" title="Oynatıcıyı aç">
+    <img id="m-thumb" alt="">
+    <div class="m-meta"><div id="m-title">Çalan yok</div><div id="m-artist"></div></div>
+    <div class="m-controls">
+      <button id="m-prev" title="Önceki">⏮</button>
+      <button id="m-toggle" class="fab" title="Oynat / duraklat">▶</button>
+      <button id="m-next" title="Sonraki">⏭</button>
     </div>
-    <div class="progress">
-      <span id="cur">0:00</span>
-      <input id="seek" type="range" min="0" max="1000" value="0">
-      <span id="dur">0:00</span>
+    <div class="m-bar"><div id="m-fill"></div></div>
+  </div>
+
+  <div id="full" class="full hidden">
+    <button id="closeFull" class="close" title="Kapat">⌄</button>
+    <div class="full-grid">
+      <div class="art-col">
+        <img id="f-art" alt="">
+        <div class="f-title"><h1 id="f-title">Çalan yok</h1><p id="f-artist"></p></div>
+        <div class="seek-row">
+          <span id="cur">0:00</span>
+          <input id="seek" type="range" min="0" max="1000" value="0">
+          <span id="dur">0:00</span>
+        </div>
+        <div class="f-controls">
+          <button id="f-prev" title="Önceki">⏮</button>
+          <button id="f-toggle" class="fab big" title="Oynat / duraklat">▶</button>
+          <button id="f-next" title="Sonraki">⏭</button>
+        </div>
+        <div class="f-actions">
+          <button id="likeBtn" class="pill" title="Beğen">♡ Beğen</button>
+          <button id="addList" class="pill" title="Listem'e ekle">+ Listem</button>
+          <label class="vol">🔈 <input id="vol" type="range" min="0" max="1" step="0.01" value="0.8"></label>
+        </div>
+      </div>
+      <div class="lyrics-col">
+        <div id="lyricsBody" class="lyrics-body">Bir şarkı çalın</div>
+      </div>
     </div>
-    <button id="likeBtn" title="Beğen">♡</button>
-    <button id="addList" title="Listem'e ekle">+ Listem</button>
-    <input id="vol" type="range" min="0" max="1" step="0.01" value="0.8" title="Ses">
-  </footer>
+  </div>
+
   <audio id="audio"></audio>
   <div id="toast"></div>
   <script src="app.js"></script>

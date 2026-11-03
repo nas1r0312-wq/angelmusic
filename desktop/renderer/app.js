@@ -12,9 +12,13 @@ const state = {
   lastLine: -1,
   liked: load("liked", []),
   playlists: load("playlists", {}),
+  thumb: "",
 };
 let playToken = 0;
 let lyricsToken = 0;
+
+const PLAY_SVG = "▶";
+const PAUSE_SVG = "❚❚";
 
 function toast(msg) {
   const t = $("toast");
@@ -50,7 +54,10 @@ function toggleLike(song) {
 
 function updateLikeButton() {
   const song = state.queue[state.index];
-  $("likeBtn").textContent = song && isLiked(song) ? "♥" : "♡";
+  const liked = !!song && isLiked(song);
+  const btn = $("likeBtn");
+  btn.textContent = liked ? "♥ Beğenildi" : "♡ Beğen";
+  btn.classList.toggle("on", liked);
 }
 
 function addToPlaylist(song) {
@@ -62,9 +69,9 @@ function addToPlaylist(song) {
   toast("Listem'e eklendi");
 }
 
-function mini(label, title, onClick) {
+function miniBtn(label, title, onClick) {
   const b = document.createElement("button");
-  b.className = "mini";
+  b.className = "mini-btn";
   b.textContent = label;
   b.title = title;
   b.addEventListener("click", (e) => { e.stopPropagation(); onClick(); });
@@ -77,6 +84,7 @@ function row(song, onPlay, buttons) {
   const img = document.createElement("img");
   img.src = song.thumb || "";
   img.alt = "";
+  img.loading = "lazy";
   const info = document.createElement("div");
   info.className = "info";
   const t = document.createElement("div");
@@ -84,9 +92,12 @@ function row(song, onPlay, buttons) {
   t.textContent = song.title;
   const a = document.createElement("div");
   a.className = "a";
-  a.textContent = song.artist + (song.duration ? "  •  " + fmt(song.duration) : "");
+  a.textContent = song.artist || "";
   info.append(t, a);
-  el.append(img, info, ...buttons);
+  const dur = document.createElement("span");
+  dur.className = "dur";
+  dur.textContent = song.duration ? fmt(song.duration) : "";
+  el.append(img, info, dur, ...buttons);
   el.addEventListener("click", onPlay);
   return el;
 }
@@ -101,19 +112,25 @@ function note(view, text) {
 function list(view, songs, onPlay) {
   songs.forEach((song, i) => {
     view.append(row(song, () => onPlay(i), [
-      mini(isLiked(song) ? "♥" : "♡", "Beğen", () => { toggleLike(song); renderView(); }),
-      mini("+", "Listem'e ekle", () => addToPlaylist(song)),
+      miniBtn(isLiked(song) ? "♥" : "♡", "Beğen", () => { toggleLike(song); renderView(); }),
+      miniBtn("+", "Listem'e ekle", () => addToPlaylist(song)),
     ]));
   });
 }
 
 function renderPlaylists(view) {
+  const title = document.createElement("h2");
+  title.className = "section-title";
+  title.textContent = "Listeler";
+  view.append(title);
+
   const form = document.createElement("form");
   form.className = "newlist";
   const input = document.createElement("input");
   input.placeholder = "Yeni liste adı";
   const button = document.createElement("button");
   button.type = "submit";
+  button.className = "btn";
   button.textContent = "Oluştur";
   form.append(input, button);
   form.addEventListener("submit", (e) => {
@@ -125,12 +142,17 @@ function renderPlaylists(view) {
     renderView();
   });
   view.append(form);
+
   const names = Object.keys(state.playlists);
   if (!names.length) note(view, "Henüz liste yok. Bir şarkıdaki + düğmesiyle Listem oluşur.");
   for (const name of names) {
     const h = document.createElement("h4");
-    h.textContent = `${name} (${state.playlists[name].length})`;
-    h.append(mini("Sil", "Listeyi sil", () => {
+    const label = document.createElement("span");
+    label.textContent = name;
+    const count = document.createElement("span");
+    count.className = "count";
+    count.textContent = `${state.playlists[name].length} şarkı`;
+    h.append(label, count, miniBtn("Sil", "Listeyi sil", () => {
       delete state.playlists[name];
       save("playlists", state.playlists);
       renderView();
@@ -141,6 +163,24 @@ function renderPlaylists(view) {
   }
 }
 
+function renderQueue(view) {
+  const title = document.createElement("h2");
+  title.className = "section-title";
+  title.textContent = "Sıra";
+  view.append(title);
+  if (!state.queue.length) return note(view, "Sıra boş.");
+  list(view, state.queue, (i) => playAt(i));
+}
+
+function renderLiked(view) {
+  const title = document.createElement("h2");
+  title.className = "section-title";
+  title.textContent = "Beğendiklerim";
+  view.append(title);
+  if (!state.liked.length) return note(view, "Henüz beğenilen şarkı yok.");
+  list(view, state.liked, (i) => setQueue(state.liked, i));
+}
+
 function renderView() {
   const view = $("view");
   view.replaceChildren();
@@ -148,11 +188,9 @@ function renderView() {
     if (!state.results.length) note(view, "Bir şarkı veya sanatçı arayın.");
     else list(view, state.results, (i) => setQueue(state.results, i));
   } else if (state.tab === "queue") {
-    if (!state.queue.length) note(view, "Sıra boş.");
-    else list(view, state.queue, (i) => playAt(i));
+    renderQueue(view);
   } else if (state.tab === "liked") {
-    if (!state.liked.length) note(view, "Henüz beğenilen şarkı yok.");
-    else list(view, state.liked, (i) => setQueue(state.liked, i));
+    renderLiked(view);
   } else if (state.tab === "playlists") {
     renderPlaylists(view);
   }
@@ -160,7 +198,7 @@ function renderView() {
 
 function show(tab) {
   state.tab = tab;
-  document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("active", b.dataset.tab === tab));
+  document.querySelectorAll(".rail button").forEach((b) => b.classList.toggle("on", b.dataset.tab === tab));
   renderView();
 }
 
@@ -168,6 +206,9 @@ function setQueue(songs, i) {
   state.queue = songs.slice();
   playAt(i);
 }
+
+function openFull() { $("full").classList.remove("hidden"); }
+function closeFull() { $("full").classList.add("hidden"); }
 
 function renderLyrics() {
   const body = $("lyricsBody");
@@ -182,6 +223,7 @@ function renderLyrics() {
     p.className = "ln";
     p.dataset.i = String(i);
     p.textContent = line.text || "♪";
+    p.addEventListener("click", () => { if (audio.duration) audio.currentTime = line.t; });
     body.append(p);
   });
 }
@@ -212,6 +254,16 @@ function highlightLyrics(t) {
   }
 }
 
+function setThumb(url) {
+  const src = url || "";
+  $("m-thumb").src = src;
+  $("f-art").src = src;
+  if (src !== state.thumb) {
+    state.thumb = src;
+    $("bg").style.backgroundImage = src ? `url("${src.replace(/"/g, "%22")}")` : "";
+  }
+}
+
 async function playAt(i) {
   if (i < 0 || i >= state.queue.length) {
     audio.pause();
@@ -220,9 +272,11 @@ async function playAt(i) {
   const token = ++playToken;
   const song = state.queue[i];
   state.index = i;
-  $("np-title").textContent = song.title;
-  $("np-artist").textContent = song.artist;
-  $("np-thumb").src = song.thumb || "";
+  $("m-title").textContent = song.title;
+  $("m-artist").textContent = song.artist || "";
+  $("f-title").textContent = song.title;
+  $("f-artist").textContent = song.artist || "";
+  setThumb(song.thumb);
   $("lyricsBody").textContent = "Sözler yükleniyor…";
   updateLikeButton();
   loadLyrics(song);
@@ -238,31 +292,46 @@ async function playAt(i) {
   }
 }
 
+function togglePlay() {
+  if (!audio.src) return;
+  if (audio.paused) audio.play().catch(() => {});
+  else audio.pause();
+}
+
+function prev() {
+  if (audio.currentTime > 3) audio.currentTime = 0;
+  else playAt(state.index - 1);
+}
+
 audio.volume = 0.8;
 audio.addEventListener("timeupdate", () => {
   const d = audio.duration || 0;
-  $("seek").value = d ? (audio.currentTime / d) * 1000 : 0;
+  const ratio = d ? audio.currentTime / d : 0;
+  $("seek").value = ratio * 1000;
+  $("m-fill").style.width = ratio * 100 + "%";
   $("cur").textContent = fmt(audio.currentTime);
   highlightLyrics(audio.currentTime);
 });
 audio.addEventListener("loadedmetadata", () => { $("dur").textContent = fmt(audio.duration); });
-audio.addEventListener("play", () => { $("toggle").textContent = "⏸"; });
-audio.addEventListener("pause", () => { $("toggle").textContent = "▶"; });
+audio.addEventListener("play", () => {
+  $("m-toggle").textContent = PAUSE_SVG;
+  $("f-toggle").textContent = PAUSE_SVG;
+});
+audio.addEventListener("pause", () => {
+  $("m-toggle").textContent = PLAY_SVG;
+  $("f-toggle").textContent = PLAY_SVG;
+});
 audio.addEventListener("ended", () => playAt(state.index + 1));
 
 $("seek").addEventListener("input", (e) => {
   if (audio.duration) audio.currentTime = (e.target.value / 1000) * audio.duration;
 });
-$("toggle").addEventListener("click", () => {
-  if (!audio.src) return;
-  if (audio.paused) audio.play().catch(() => {});
-  else audio.pause();
-});
-$("prev").addEventListener("click", () => {
-  if (audio.currentTime > 3) audio.currentTime = 0;
-  else playAt(state.index - 1);
-});
-$("next").addEventListener("click", () => playAt(state.index + 1));
+$("m-toggle").addEventListener("click", (e) => { e.stopPropagation(); togglePlay(); });
+$("f-toggle").addEventListener("click", togglePlay);
+$("m-prev").addEventListener("click", (e) => { e.stopPropagation(); prev(); });
+$("f-prev").addEventListener("click", prev);
+$("m-next").addEventListener("click", (e) => { e.stopPropagation(); playAt(state.index + 1); });
+$("f-next").addEventListener("click", () => playAt(state.index + 1));
 $("vol").addEventListener("input", (e) => { audio.volume = Number(e.target.value); });
 $("likeBtn").addEventListener("click", () => {
   const song = state.queue[state.index];
@@ -273,7 +342,15 @@ $("addList").addEventListener("click", () => {
   if (song) addToPlaylist(song);
 });
 
-document.querySelectorAll("nav button").forEach((b) => b.addEventListener("click", () => show(b.dataset.tab)));
+$("mini").addEventListener("click", openFull);
+$("closeFull").addEventListener("click", closeFull);
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT" && e.target.type !== "range") return;
+  if (e.key === "Escape") closeFull();
+  else if (e.key === " ") { e.preventDefault(); togglePlay(); }
+});
+
+document.querySelectorAll(".rail button").forEach((b) => b.addEventListener("click", () => show(b.dataset.tab)));
 
 $("searchForm").addEventListener("submit", async (e) => {
   e.preventDefault();
