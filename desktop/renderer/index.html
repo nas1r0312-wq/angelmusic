@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; media-src https: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AngelMusic</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside>
+    <div class="brand"><img src="logo.png" alt=""><span>AngelMusic</span></div>
+    <nav>
+      <button data-tab="search" class="active">Arama</button>
+      <button data-tab="queue">Sıra</button>
+      <button data-tab="liked">Beğendiklerim</button>
+      <button data-tab="playlists">Listeler</button>
+    </nav>
+  </aside>
+  <main>
+    <form id="searchForm"><input id="q" placeholder="Şarkı veya sanatçı ara" autocomplete="off"><button>Ara</button></form>
+    <section id="view"></section>
+  </main>
+  <aside class="lyrics">
+    <h3>Şarkı sözleri</h3>
+    <div id="lyricsBody">Bir şarkı çalın</div>
+  </aside>
+  <footer class="player">
+    <img id="np-thumb" alt="">
+    <div class="meta"><div id="np-title">Çalan yok</div><div id="np-artist"></div></div>
+    <div class="controls">
+      <button id="prev" title="Önceki">⏮</button>
+      <button id="toggle" class="primary" title="Oynat / duraklat">▶</button>
+      <button id="next" title="Sonraki">⏭</button>
+    </div>
+    <div class="progress">
+      <span id="cur">0:00</span>
+      <input id="seek" type="range" min="0" max="1000" value="0">
+      <span id="dur">0:00</span>
+    </div>
+    <button id="likeBtn" title="Beğen">♡</button>
+    <button id="addList" title="Listem'e ekle">+ Listem</button>
+    <input id="vol" type="range" min="0" max="1" step="0.01" value="0.8" title="Ses">
+  </footer>
+  <audio id="audio"></audio>
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

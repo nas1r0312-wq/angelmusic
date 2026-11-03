@@ -1,0 +1,53 @@
+name: Desktop builds (Windows and Linux)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag to attach the files to (e.g. v1.0.2)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    name: Linux (AppImage and deb)
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build
+        working-directory: desktop
+        run: |
+          npm install
+          npx electron-builder --linux --publish never
+      - name: Attach to release
+        run: gh release upload "$TAG" desktop/dist/*.AppImage desktop/dist/*.deb --repo "${{ github.repository }}" --clobber
+
+  windows:
+    name: Windows (installer and portable)
+    runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build
+        shell: bash
+        working-directory: desktop
+        run: |
+          npm install
+          npx electron-builder --win --publish never
+      - name: Attach to release
+        shell: bash
+        run: gh release upload "$TAG" desktop/dist/AngelMusic-Setup-*.exe desktop/dist/AngelMusic-Portable-*.exe --repo "${{ github.repository }}" --clobber

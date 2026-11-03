@@ -30,6 +30,15 @@ Get the latest APK from [Releases](https://github.com/nas1r0312-wq/angelmusic/re
 - Discord Rich Presence, Last.fm, music recognition and Listen Together.
 - Frosted glass surfaces and adaptive layouts for phones and larger screens.
 
+## Desktop (Windows and Linux)
+
+The desktop version lives in [`desktop/`](desktop) and is an Electron app with the same search, playback, queue, liked songs, playlists and synced lyrics.
+
+- Windows: `AngelMusic-Setup-<version>.exe` (installer) or `AngelMusic-Portable-<version>.exe` (no install)
+- Linux: `AngelMusic-<version>.AppImage` or `.deb`
+
+Get them from the [latest release](https://github.com/nas1r0312-wq/angelmusic/releases/latest). Windows may show a SmartScreen warning because the builds are not code-signed; choose "More info" then "Run anyway".
+
 ## Build locally
 
 Requirements: JDK 21, Android Studio with Android SDK 37, and the Android NDK.

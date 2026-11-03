@@ -1,0 +1,41 @@
+{
+  "name": "angelmusic-desktop",
+  "productName": "AngelMusic",
+  "version": "1.0.2",
+  "description": "AngelMusic for Windows and Linux",
+  "main": "main.js",
+  "license": "GPL-3.0-only",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.angelmusic.desktop",
+    "productName": "AngelMusic",
+    "directories": { "output": "dist", "buildResources": "build" },
+    "files": ["main.js", "preload.js", "renderer/**/*", "package.json"],
+    "icon": "build/icon.png",
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "AngelMusic-Setup-${version}.${ext}"
+    },
+    "portable": { "artifactName": "AngelMusic-Portable-${version}.${ext}" },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Audio",
+      "artifactName": "AngelMusic-${version}.${ext}"
+    }
+  }
+}
