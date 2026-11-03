@@ -17,13 +17,31 @@
   "build": {
     "appId": "com.angelmusic.desktop",
     "productName": "AngelMusic",
-    "directories": { "output": "dist", "buildResources": "build" },
-    "files": ["main.js", "preload.js", "renderer/**/*", "package.json"],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "package.json"
+    ],
     "icon": "build/icon.png",
     "win": {
       "target": [
-        { "target": "nsis", "arch": ["x64"] },
-        { "target": "portable", "arch": ["x64"] }
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
       ]
     },
     "nsis": {
@@ -31,11 +49,22 @@
       "allowToChangeInstallationDirectory": true,
       "artifactName": "AngelMusic-Setup-${version}.${ext}"
     },
-    "portable": { "artifactName": "AngelMusic-Portable-${version}.${ext}" },
+    "portable": {
+      "artifactName": "AngelMusic-Portable-${version}.${ext}"
+    },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "category": "Audio",
       "artifactName": "AngelMusic-${version}.${ext}"
     }
+  },
+  "author": "AngelMusic",
+  "homepage": "https://github.com/nas1r0312-wq/angelmusic",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nas1r0312-wq/angelmusic.git"
   }
 }
