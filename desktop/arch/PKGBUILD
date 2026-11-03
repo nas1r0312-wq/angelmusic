@@ -9,7 +9,7 @@ license=('GPL-3.0-only')
 depends=('gtk3' 'nss' 'libxss' 'alsa-lib' 'libnotify')
 options=('!strip')
 source=("AngelMusic-${pkgver}.AppImage::https://github.com/nas1r0312-wq/angelmusic/releases/download/v${pkgver}/AngelMusic-${pkgver}.AppImage")
-sha256sums=('2b82c3639d74e85e5080a4dafa928d245a1502f10a6153e463d857ce69ae9365')
+sha256sums=('52d964f40476d664f05525fa83087355ac43cf8cab3c2e113045e65483af995c')
 
 package() {
   cd "$srcdir"
