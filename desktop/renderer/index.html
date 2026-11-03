@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; media-src https: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; media-src https: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'none'; object-src 'none'">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>AngelMusic</title>
   <link rel="stylesheet" href="style.css">
@@ -10,73 +10,69 @@
 <body>
   <div id="bg" class="bg"></div>
 
-  <nav class="rail glass">
+  <aside class="rail glass">
     <img class="logo" src="logo.png" alt="AngelMusic">
-    <button data-tab="search" class="on" title="Ara">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><span>Ara</span>
-    </button>
-    <button data-tab="queue" title="Sıra">
-      <svg viewBox="0 0 24 24"><path d="M4 6h12M4 12h12M4 18h8M18 15v6"/></svg><span>Sıra</span>
-    </button>
-    <button data-tab="liked" title="Beğendiklerim">
-      <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Beğeni</span>
-    </button>
-    <button data-tab="playlists" title="Listeler">
-      <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6M9 13h6M9 17h3"/></svg><span>Listeler</span>
-    </button>
-  </nav>
+    <button data-tab="search" class="on"><span class="ico" data-icon="search"></span><span>Ara</span></button>
+    <button data-tab="queue"><span class="ico" data-icon="queue"></span><span>Sıra</span></button>
+    <button data-tab="liked"><span class="ico" data-icon="heart"></span><span>Beğeni</span></button>
+    <button data-tab="playlists"><span class="ico" data-icon="library"></span><span>Listeler</span></button>
+  </aside>
 
   <main>
     <header>
-      <form id="searchForm" class="search glass">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
-        <input id="q" placeholder="Şarkı, sanatçı veya albüm ara" autocomplete="off">
+      <form id="searchForm" class="search glass" role="search">
+        <span class="ico" data-icon="search"></span>
+        <input id="q" type="search" placeholder="Şarkı, sanatçı veya albüm ara" autocomplete="off" spellcheck="false">
       </form>
     </header>
-    <section id="view" class="view"></section>
+    <section id="view" class="view" aria-live="polite"></section>
   </main>
 
-  <div id="mini" class="mini-player glass" role="button" title="Oynatıcıyı aç">
+  <div id="mini" class="mini-player glass" role="button" tabindex="0" title="Oynatıcıyı aç">
     <img id="m-thumb" alt="">
     <div class="m-meta"><div id="m-title">Çalan yok</div><div id="m-artist"></div></div>
     <div class="m-controls">
-      <button id="m-prev" title="Önceki">⏮</button>
-      <button id="m-toggle" class="fab" title="Oynat / duraklat">▶</button>
-      <button id="m-next" title="Sonraki">⏭</button>
+      <button id="m-prev" data-icon="prev" title="Önceki"></button>
+      <button id="m-toggle" class="fab" data-icon="play" title="Oynat / duraklat"></button>
+      <button id="m-next" data-icon="next" title="Sonraki"></button>
     </div>
     <div class="m-bar"><div id="m-fill"></div></div>
   </div>
 
-  <div id="full" class="full hidden">
-    <button id="closeFull" class="close" title="Kapat">⌄</button>
+  <div id="full" class="full hidden" aria-hidden="true">
+    <button id="closeFull" class="close" data-icon="chevron" title="Kapat (Esc)"></button>
     <div class="full-grid">
       <div class="art-col">
         <img id="f-art" alt="">
         <div class="f-title"><h1 id="f-title">Çalan yok</h1><p id="f-artist"></p></div>
         <div class="seek-row">
           <span id="cur">0:00</span>
-          <input id="seek" type="range" min="0" max="1000" value="0">
+          <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Konum">
           <span id="dur">0:00</span>
         </div>
         <div class="f-controls">
-          <button id="f-prev" title="Önceki">⏮</button>
-          <button id="f-toggle" class="fab big" title="Oynat / duraklat">▶</button>
-          <button id="f-next" title="Sonraki">⏭</button>
+          <button id="shuffle" data-icon="shuffle" title="Karışık çal"></button>
+          <button id="f-prev" data-icon="prev" title="Önceki"></button>
+          <button id="f-toggle" class="fab big" data-icon="play" title="Oynat / duraklat (Boşluk)"></button>
+          <button id="f-next" data-icon="next" title="Sonraki"></button>
+          <button id="repeat" data-icon="repeat" title="Tekrarla"></button>
         </div>
         <div class="f-actions">
-          <button id="likeBtn" class="pill" title="Beğen">♡ Beğen</button>
-          <button id="addList" class="pill" title="Listem'e ekle">+ Listem</button>
-          <label class="vol">🔈 <input id="vol" type="range" min="0" max="1" step="0.01" value="0.8"></label>
+          <button id="likeBtn" class="pill" type="button"></button>
+          <button id="addList" class="pill" type="button"><span class="ico" data-icon="plus"></span>Listeye ekle</button>
+          <button id="dlBtn" class="pill" type="button"><span class="ico" data-icon="download"></span>İndir</button>
+          <label class="vol"><span class="ico" data-icon="volume"></span><input id="vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Ses"></label>
         </div>
       </div>
       <div class="lyrics-col">
-        <div id="lyricsBody" class="lyrics-body">Bir şarkı çalın</div>
+        <div id="lyricsBody" class="lyrics-body"></div>
       </div>
     </div>
   </div>
 
-  <audio id="audio"></audio>
-  <div id="toast"></div>
+  <div id="menu" class="menu glass hidden" role="menu"></div>
+  <audio id="audio" preload="auto"></audio>
+  <div id="toast" class="toast" role="status"></div>
   <script src="app.js"></script>
 </body>
 </html>
