@@ -9,6 +9,7 @@ app.setAppUserModelId("com.angelmusic.desktop");
 // InnerTube endpoints and client identities, the same ones the Android app uses.
 const API = "https://music.youtube.com/youtubei/v1/";
 const SONG_FILTER = "EgWKAQIIAWoKEAkQBRAKEAMQBA==";
+const ARTIST_FILTER = "EgWKAQIgAWoKEAkQBRAKEAMQBA==";
 const UA_APP = "AngelMusic desktop (https://github.com/nas1r0312-wq/angelmusic)";
 const UA_WEB = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0";
 const WEB_REMIX = { clientName: "WEB_REMIX", clientVersion: "1.20260213.01.00", clientId: "67", userAgent: UA_WEB };
@@ -71,34 +72,97 @@ function sharpThumb(url) {
   return url ? url.replace(/=w\d+-h\d+[^ ]*$/, "=w544-h544-l90-rj") : "";
 }
 
+// Collects every object stored under `key`, wherever it sits in the JSON tree.
+// YouTube Music moves its renderers between layouts, so walking is more robust than fixed paths.
+function findAll(node, key, out = []) {
+  if (Array.isArray(node)) {
+    for (const item of node) findAll(item, key, out);
+  } else if (node && typeof node === "object") {
+    if (key in node) out.push(node[key]);
+    for (const value of Object.values(node)) findAll(value, key, out);
+  }
+  return out;
+}
+
+const ITEM_RENDERERS = ["musicResponsiveListItemRenderer", "musicTwoRowItemRenderer"];
+const rendererItems = (json) => ITEM_RENDERERS.flatMap((key) => findAll(json, key));
+
+function videoIdOf(r) {
+  return (
+    r.playlistItemData?.videoId ??
+    r.overlay?.musicItemThumbnailOverlayRenderer?.content?.musicPlayButtonRenderer?.playNavigationEndpoint?.watchEndpoint?.videoId ??
+    r.navigationEndpoint?.watchEndpoint?.videoId ??
+    null
+  );
+}
+
+function browseIdOf(r) {
+  return findAll(r, "browseId").find((id) => typeof id === "string" && id.startsWith("UC")) ?? null;
+}
+
+function titleOf(r) {
+  if (r.flexColumns) return textOf(r.flexColumns[0]?.musicResponsiveListItemFlexColumnRenderer?.text?.runs);
+  return textOf(r.title?.runs);
+}
+
+function subtitleParts(r) {
+  const runs = r.flexColumns
+    ? r.flexColumns[1]?.musicResponsiveListItemFlexColumnRenderer?.text?.runs
+    : r.subtitle?.runs;
+  return (runs ?? []).map((x) => x.text).filter((t) => t.trim() && t.trim() !== "•");
+}
+
+function durationOf(r) {
+  return r.fixedColumns?.[0]?.musicResponsiveListItemFixedColumnRenderer?.text?.runs?.[0]?.text ?? "";
+}
+
+function thumbOf(node) {
+  const lists = findAll(node, "thumbnails").filter((t) => Array.isArray(t) && t.length);
+  return sharpThumb(lists[0]?.at(-1)?.url ?? "");
+}
+
 function parseSongs(json) {
-  const sections = json?.contents?.tabbedSearchResultsRenderer?.tabs?.[0]?.tabRenderer?.content?.sectionListRenderer?.contents ?? [];
   const songs = [];
   const seen = new Set();
-  for (const section of sections) {
-    for (const row of section.musicShelfRenderer?.contents ?? []) {
-      const r = row.musicResponsiveListItemRenderer;
-      if (!r) continue;
-      const videoId =
-        r.playlistItemData?.videoId ??
-        r.overlay?.musicItemThumbnailOverlayRenderer?.content?.musicPlayButtonRenderer?.playNavigationEndpoint?.watchEndpoint?.videoId;
-      if (!videoId || seen.has(videoId)) continue;
-      seen.add(videoId);
-      const cols = r.flexColumns ?? [];
-      const title = textOf(cols[0]?.musicResponsiveListItemFlexColumnRenderer?.text?.runs);
-      const second = (cols[1]?.musicResponsiveListItemFlexColumnRenderer?.text?.runs ?? []).filter((x) => x.text.trim() !== "•");
-      const durationText = r.fixedColumns?.[0]?.musicResponsiveListItemFixedColumnRenderer?.text?.runs?.[0]?.text;
-      const thumbs = r.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails ?? [];
-      songs.push({
-        videoId,
-        title: title || "Adsız",
-        artist: second[0]?.text ?? "",
-        duration: parseDuration(durationText),
-        thumb: sharpThumb(thumbs.at(-1)?.url ?? ""),
-      });
-    }
+  for (const r of rendererItems(json)) {
+    const videoId = videoIdOf(r);
+    if (!videoId || seen.has(videoId)) continue;
+    seen.add(videoId);
+    songs.push({
+      videoId,
+      title: titleOf(r) || "Adsız",
+      artist: subtitleParts(r)[0] ?? "",
+      duration: parseDuration(durationOf(r)),
+      thumb: thumbOf(r),
+    });
   }
   return songs;
+}
+
+function parseArtists(json) {
+  const artists = [];
+  const seen = new Set();
+  for (const r of rendererItems(json)) {
+    const browseId = browseIdOf(r);
+    if (!browseId || seen.has(browseId)) continue;
+    seen.add(browseId);
+    artists.push({ browseId, name: titleOf(r) || "Sanatçı", thumb: thumbOf(r) });
+  }
+  return artists;
+}
+
+async function artistPage(browseId) {
+  const id = String(browseId ?? "");
+  if (!/^UC[\w-]{10,}$/.test(id)) throw new Error("Geçersiz sanatçı kimliği");
+  const json = await innertube("browse", { browseId: id }, WEB_REMIX);
+  const header =
+    findAll(json, "musicImmersiveHeaderRenderer")[0] ?? findAll(json, "musicVisualHeaderRenderer")[0] ?? {};
+  return {
+    browseId: id,
+    name: textOf(header.title?.runs) || "Sanatçı",
+    thumb: thumbOf(header),
+    songs: parseSongs(json),
+  };
 }
 
 // Signed stream URLs expire; keep them until shortly before the expire timestamp.
@@ -238,9 +302,17 @@ function checkKey(key) {
 
 ipcMain.handle("search", async (_e, query) => {
   const q = String(query ?? "").trim().slice(0, 200);
-  if (!q) return [];
-  return parseSongs(await innertube("search", { query: q, params: SONG_FILTER }, WEB_REMIX));
+  if (!q) return { songs: [], artists: [] };
+  const [songsJson, artistsJson] = await Promise.all([
+    innertube("search", { query: q, params: SONG_FILTER }, WEB_REMIX),
+    innertube("search", { query: q, params: ARTIST_FILTER }, WEB_REMIX).catch(() => null),
+  ]);
+  return {
+    songs: parseSongs(songsJson),
+    artists: artistsJson ? parseArtists(artistsJson).slice(0, 12) : [],
+  };
 });
+ipcMain.handle("artist", (_e, browseId) => artistPage(browseId));
 ipcMain.handle("stream", async (_e, videoId, force) => {
   const stream = await getStream(checkVideoId(videoId), !!force);
   return { url: stream.url, mime: stream.mime };

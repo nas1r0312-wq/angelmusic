@@ -76,7 +76,9 @@ const CHIPS = ["Türkçe pop", "Lo-fi", "Rock", "Rap", "Klasik", "Yeni çıkanla
 const state = {
   tab: "search",
   openPlaylist: null,
-  search: { status: "idle", query: "", results: [], error: "" },
+  search: { status: "idle", query: "", results: [], artists: [], error: "" },
+  artist: null,
+  artistToken: 0,
   searchToken: 0,
   queue: [],
   index: -1,
@@ -250,17 +252,52 @@ function renderSearch(view) {
   if (s.status === "idle") {
     view.append(h("div", { class: "hero" },
       h("h2", { text: "Ne dinlemek istersin?" }),
-      h("p", { text: "Şarkı, sanatçı veya albüm ara." }),
+      h("p", { text: "Şarkı veya sanatçı ara." }),
       h("div", { class: "chips" }, CHIPS.map((c) =>
         h("button", { class: "chip", type: "button", onclick: () => { $("q").value = c; runSearch(c); } }, c)))));
     return;
   }
   if (s.status === "loading") return view.append(note("Aranıyor…"));
   if (s.status === "error") return view.append(note(s.error));
-  view.append(sectionHead(`“${s.query}”`, `${s.results.length} sonuç`,
-    s.results.length ? textBtn("▶ Hepsini çal", () => playList(s.results, 0)) : null));
-  if (!s.results.length) return view.append(note("Sonuç bulunamadı."));
-  view.append(songList(s.results, (i) => playList(s.results, i)));
+  if (!s.results.length && !s.artists.length) {
+    view.append(sectionHead(`“${s.query}”`, null));
+    return view.append(note("Sonuç bulunamadı."));
+  }
+  view.append(sectionHead(`“${s.query}”`, null));
+  if (s.artists.length) {
+    view.append(h("h3", { class: "section-h", text: "Sanatçılar" }));
+    view.append(h("div", { class: "artist-row" }, s.artists.map(artistCard)));
+  }
+  if (s.results.length) {
+    view.append(h("h3", { class: "section-h" },
+      "Şarkılar",
+      textBtn("▶ Hepsini çal", () => playList(s.results, 0), "small")));
+    view.append(songList(s.results, (i) => playList(s.results, i)));
+  }
+}
+
+function artistCard(a) {
+  const open = () => openArtist(a.browseId, a.name, a.thumb);
+  return h("div", { class: "acard", role: "button", tabindex: "0", onclick: open, onkeydown: (e) => { if (e.key === "Enter") open(); } },
+    h("div", { class: "acover" }, a.thumb ? h("img", { src: a.thumb, alt: "", loading: "lazy" }) : null),
+    h("div", { class: "card-t", text: a.name }));
+}
+
+function renderArtist(view) {
+  view.append(h("button", { class: "back", type: "button", onclick: () => show("search") },
+    h("span", { class: "ico", "data-icon": "back" }), "Aramaya dön"));
+  const a = state.artist;
+  if (!a) return;
+  if (a.status === "loading") return view.append(note("Yükleniyor…"));
+  if (a.status === "error") return view.append(note(a.error));
+  view.append(h("div", { class: "artist-hero" },
+    h("div", { class: "ahero-img" }, a.thumb ? h("img", { src: a.thumb, alt: "" }) : null),
+    h("div", { class: "ahero-info" },
+      h("h2", { text: a.name }),
+      h("p", { class: "sub", text: `${a.songs.length} şarkı` }),
+      a.songs.length ? textBtn("▶ Çal", () => playList(a.songs, 0)) : null)));
+  if (!a.songs.length) return view.append(note("Bu sanatçının şarkısı bulunamadı."));
+  view.append(songList(a.songs, (i) => playList(a.songs, i)));
 }
 
 function renderQueue(view) {
@@ -338,6 +375,7 @@ function renderView() {
   else if (state.tab === "queue") renderQueue(view);
   else if (state.tab === "liked") renderLiked(view);
   else if (state.tab === "playlists") renderPlaylists(view);
+  else if (state.tab === "artist") renderArtist(view);
   view.querySelectorAll("[data-icon]").forEach((el) => setIcon(el, el.dataset.icon));
 }
 
@@ -355,15 +393,32 @@ async function runSearch(query) {
   state.openPlaylist = null;
   document.querySelectorAll(".rail button").forEach((b) => b.classList.toggle("on", b.dataset.tab === "search"));
   const token = ++state.searchToken;
-  Object.assign(state.search, { status: "loading", query: q, results: [], error: "" });
+  Object.assign(state.search, { status: "loading", query: q, results: [], artists: [], error: "" });
   renderView();
   try {
-    const results = await angel.search(q);
+    const { songs, artists } = await angel.search(q);
     if (token !== state.searchToken) return;
-    Object.assign(state.search, { status: "done", results });
+    Object.assign(state.search, { status: "done", results: songs, artists });
   } catch (err) {
     if (token !== state.searchToken) return;
     Object.assign(state.search, { status: "error", error: "Arama başarısız: " + err.message });
+  }
+  renderView();
+}
+
+async function openArtist(browseId, name, thumb) {
+  const token = ++state.artistToken;
+  state.artist = { status: "loading", name, thumb, songs: [], error: "" };
+  state.tab = "artist";
+  document.querySelectorAll(".rail button").forEach((b) => b.classList.remove("on"));
+  renderView();
+  try {
+    const data = await angel.artist(browseId);
+    if (token !== state.artistToken) return;
+    state.artist = { status: "done", name: data.name || name, thumb: data.thumb || thumb, songs: data.songs, error: "" };
+  } catch (err) {
+    if (token !== state.artistToken) return;
+    state.artist = { status: "error", name, thumb, songs: [], error: "Sanatçı açılamadı: " + err.message };
   }
   renderView();
 }

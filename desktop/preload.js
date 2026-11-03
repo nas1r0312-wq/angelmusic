@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld("angel", {
   search: (query) => ipcRenderer.invoke("search", query),
   stream: (videoId, force) => ipcRenderer.invoke("stream", videoId, !!force),
   lyrics: (artist, title, duration) => ipcRenderer.invoke("lyrics", artist, title, duration),
+  artist: (browseId) => ipcRenderer.invoke("artist", browseId),
   download: (song) => ipcRenderer.invoke("download", song),
   reveal: (file) => ipcRenderer.invoke("reveal", file),
   store: {
