@@ -1,0 +1,58 @@
+# Maintainer: AngelMusic <angelmusic@users.noreply.github.com>
+pkgname=angelmusic
+pkgver=1.0.2
+pkgrel=1
+pkgdesc="AngelMusic: masaüstü müzik çalar"
+arch=('x86_64')
+url="https://github.com/nas1r0312-wq/angelmusic"
+license=('GPL-3.0-only')
+depends=('gtk3' 'nss' 'libxss' 'alsa-lib' 'libnotify')
+options=('!strip')
+source=("AngelMusic-${pkgver}.AppImage::https://github.com/nas1r0312-wq/angelmusic/releases/download/v${pkgver}/AngelMusic-${pkgver}.AppImage")
+sha256sums=('050e654c81d3d2c10b691605ca7d04849943f2128dc63a456836c1c1c00a7e19')
+
+package() {
+  cd "$srcdir"
+  chmod +x "AngelMusic-${pkgver}.AppImage"
+  # Unpack instead of mounting, so no FUSE is needed.
+  "./AngelMusic-${pkgver}.AppImage" --appimage-extract >/dev/null
+
+  install -dm755 "$pkgdir/opt/$pkgname"
+  cp -a squashfs-root/. "$pkgdir/opt/$pkgname/"
+  rm -f "$pkgdir/opt/$pkgname/AppRun"
+
+  local exe
+  exe=$(find squashfs-root -maxdepth 1 -type f -iname 'angelmusic' | head -n1)
+  [ -n "$exe" ] || { echo "AngelMusic executable not found in AppImage" >&2; return 1; }
+  local exe_name
+  exe_name=$(basename "$exe")
+
+  install -dm755 "$pkgdir/usr/bin"
+  cat > "$pkgdir/usr/bin/$pkgname" <<WRAP
+#!/bin/sh
+exec /opt/$pkgname/$exe_name "\$@"
+WRAP
+  chmod 755 "$pkgdir/usr/bin/$pkgname"
+
+  install -dm755 "$pkgdir/usr/share/applications"
+  local desktop icon
+  desktop=$(find squashfs-root -maxdepth 1 -name '*.desktop' | head -n1)
+  if [ -n "$desktop" ]; then
+    sed -e "s|^Exec=.*|Exec=$pkgname %U|" -e "s|^Icon=.*|Icon=$pkgname|" "$desktop" > "$pkgdir/usr/share/applications/$pkgname.desktop"
+  else
+    cat > "$pkgdir/usr/share/applications/$pkgname.desktop" <<DESK
+[Desktop Entry]
+Name=AngelMusic
+Comment=$pkgdesc
+Exec=$pkgname %U
+Icon=$pkgname
+Terminal=false
+Type=Application
+Categories=Audio;Music;Player;
+DESK
+  fi
+  chmod 644 "$pkgdir/usr/share/applications/$pkgname.desktop"
+
+  icon=$(find squashfs-root -maxdepth 1 -name '*.png' | head -n1)
+  install -Dm644 "$icon" "$pkgdir/usr/share/pixmaps/$pkgname.png"
+}
