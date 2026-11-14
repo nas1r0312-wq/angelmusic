@@ -39,37 +39,6 @@ The desktop version lives in [`desktop/`](desktop) and is an Electron app with t
 
 Get them from the [latest release](https://github.com/nas1r0312-wq/angelmusic/releases/latest). Windows may show a SmartScreen warning because the builds are not code-signed; choose "More info" then "Run anyway".
 
-## Build locally
-
-Requirements: JDK 21, Android Studio with Android SDK 37, and the Android NDK.
-
-Open the repository in Android Studio and let Gradle sync, or build from a terminal:
-
-```bash
-./gradlew :app:assembleUniversalFossDebug
-./gradlew :app:testUniversalFossDebugUnitTest
-```
-
-The `Foss` build omits Google Play services; the `Gms` build includes Google Cast support.
-
-## Project structure
-
-| Path | Responsibility |
-| --- | --- |
-| `app/` | Android application, screens, ViewModels, navigation, playback service and persistence. |
-| `hig/` | Shared Cupertino-style controls, theme primitives and glass utilities. |
-| `innertube/` | InnerTube client and models. |
-| `lyrics/` | Lyrics providers and parsing. |
-| `canvas/` | Animated canvas and catalog features. |
-| `artwork/` | Artwork loading, caching and transitions. |
-| `spotify/` | Spotify authentication and playlist import. |
-| `integrations/` | Discord, Last.fm, music recognition and related integrations. |
-| `network-storage/` | SMB and WebDAV music sources. |
-| `spine/` | Add-on module hosting and lifecycle. |
-| `listen-together-server/` | Server for Listen Together. |
-
-## Contributing
-
 See the [Contributing Guide](.github/CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). Questions and ideas go to [GitHub Discussions](https://github.com/nas1r0312-wq/angelmusic/discussions).
 
 ## Legal
